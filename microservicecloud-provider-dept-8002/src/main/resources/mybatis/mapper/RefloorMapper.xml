@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.springcloud.dao.RefloorDao">
+
+    <select id="findById" parameterType="Integer" resultType="com.cxy.springcloud.entities.ReFloor">
+		select * from refloor where refid=#{refId};
+	</select>
+    <select id="findAll" resultType="com.cxy.springcloud.entities.ReFloor">
+		select * from refloor;
+	</select>
+    <select id="findLimit" parameterType="int" resultType="com.cxy.springcloud.entities.ReFloor">
+		select * from refloor limit #{fnum},#{bnum};
+	</select>
+    <insert id="addRefloor" parameterType="ReFloor">
+		INSERT INTO refloor(user_id, reuser_id, refloorcontent, refloor, buildtime) VALUES(#{user_id},#{reUser_id},#{reFloorContent},#{reFloor},current_timestamp());
+	</insert>
+    <delete id="deleteRefloor" parameterType="ReFloor">
+		delete from refloor where id=#{id};
+	</delete>
+
+</mapper>

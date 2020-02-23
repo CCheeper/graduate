@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.springcloud.dao.AdminUserDao">
+    <select id="findById" parameterType="Integer" resultType="com.cxy.springcloud.entities.AdminUser">
+		select * from adminuser where id=#{id};
+	</select>
+    <select id="findAll" resultType="com.cxy.springcloud.entities.AdminUser">
+		select * from adminuser;
+	</select>
+    <select id="findLimit" parameterType="int" resultType="com.cxy.springcloud.entities.AdminUser">
+		select * from adminuser limit #{fnum},#{bnum};
+	</select>
+    <insert id="addAdminUser" parameterType="AdminUser">
+		INSERT INTO adminuser(password,username) VALUES(#{password},#{username});
+	</insert>
+    <delete id="deleteAdminUser" parameterType="Integer">
+		delete from adminuser where id=#{id};
+	</delete>
+</mapper>

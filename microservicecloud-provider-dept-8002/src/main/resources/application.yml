@@ -1,0 +1,41 @@
+server:
+  port: 8002
+  
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml  #mybatis所在路径
+  type-aliases-package: com.cxy.springcloud.entities #entity别名类
+  mapper-locations:
+  - classpath:mybatis/mapper/**/*.xml #mapper映射文件
+    
+spring:
+   application:
+    name: microservicecloud-dept 
+   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-m5ei40xwg7k42zri9io.mysql.rds.aliyuncs.com:3306/bbs?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: adminTMD250KaKa@
+    dbcp2:
+      min-idle: 5
+      initial-size: 5
+      max-total: 5
+      max-wait-millis: 200
+      
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url: 
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    instance-id: microservicecloud-dept8002   #自定义服务名称信息
+    prefer-ip-address: true     #访问路径可以显示IP地址
+      
+info:
+  app.name: atguigu-microservicecloud
+  company.name: www.atguigu.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+      
+      
+      
+
