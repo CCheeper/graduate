@@ -12,15 +12,15 @@ import java.util.Date;
 @Data
 public class User {
     private int id;
-    private String headId;
+    private String headid;
     private String email;
     private String password;
     private String username;
-    private String phoneNumber;
-    private Date signInTime;
-    private String focusUsers;
-    private String focusText;
+    private String phonenumber;
+    private Date signintime;
+    private String focususers;
+    private String focustext;
     private String sex;
-    private String underWrite;
+    private String underwrite;
     private int experence;
 }

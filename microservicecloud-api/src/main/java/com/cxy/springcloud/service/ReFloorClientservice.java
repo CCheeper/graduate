@@ -22,4 +22,7 @@ public interface ReFloorClientservice {
 
     @RequestMapping(value = "/refloor/paging", method = RequestMethod.GET)
     public List<ReFloor> findLimit(@RequestParam("fnum") int fnum, @RequestParam("bnum") int bnum);
+
+    @RequestMapping(value = "/refloor/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody ReFloor reFloor);
 }

@@ -39,4 +39,9 @@ public class AdminController_Consumer {
     public List<AdminUser> paging(@RequestParam("fnum") int fnum,@RequestParam("bnum") int bnum) {
         return service.findLimit(fnum,bnum);
     }
+
+    @RequestMapping(value = "/consumer/adminuser/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody AdminUser adminUser) {
+        return service.update(adminUser);
+    }
 }

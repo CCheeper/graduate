@@ -40,4 +40,14 @@ public class TextController_Consumer {
     public List<Text> paging(@RequestParam("fnum") int fnum,@RequestParam("bnum") int bnum) {
         return service.findLimit(fnum,bnum);
     }
+
+    @RequestMapping(value = "/consumer/text/status/{id}", method = RequestMethod.GET)
+    public String  status(@PathVariable("id") int id) {
+        return this.service.status(id);
+    }
+
+    @RequestMapping(value = "/consumer/text/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody Text text) {
+        return service.update(text);
+    }
 }

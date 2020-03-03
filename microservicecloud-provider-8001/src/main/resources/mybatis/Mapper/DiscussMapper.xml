@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.springcloud.dao.DiscussDao">
+    <resultMap id="result_Discuss_Map" type="com.cxy.springcloud.entities.Discuss">
+        <id column="Discuss0" property="id" />
+        <result column="Discuss1" property="userid" />
+        <result column="Discuss2" property="textid" />
+        <result column="Discuss3" property="discusstext" />
+        <result column="Discuss4" property="buildtime" />
+        <result column="Discuss5" property="floor" />
+    </resultMap>
+
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="discuss_Column">
+        discuss.id as Discuss0
+        ,discuss.userid as Discuss1
+        ,discuss.textid as Discuss2
+        ,discuss.discusstext as Discuss3
+        ,discuss.buildtime as Discuss4
+        ,discuss.floor as Discuss5
+    </sql>
+
+    <select id="getDiscussRowCount" parameterType="com.cxy.springcloud.common.Assist" resultType="java.lang.Integer">
+        select count(id) from discuss
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <select id="selectDiscuss" parameterType="com.cxy.springcloud.common.Assist" resultMap="result_Discuss_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="discuss_Column" /> 
+            </otherwise>
+        </choose>
+        from discuss
+        <if test="require!=null"><include refid="Assist" /></if>
+        <if test="order !=null">${order}</if>
+        <if test="rowSize !=null"> LIMIT #{rowSize} <if test="startRow !=null"> OFFSET #{startRow}</if></if>
+    </select> 
+
+    <select id="selectDiscussById" parameterType="java.lang.Integer" resultMap="result_Discuss_Map">
+        select 
+            <include refid="discuss_Column" /> 
+        from discuss
+        where discuss.id = #{id}
+    </select> 
+
+
+    <insert id="insertDiscuss" parameterType="com.cxy.springcloud.entities.Discuss">
+        insert into discuss(id,userid,textid,discusstext,buildtime,floor) 
+        values(#{id},#{userid},#{textid},#{discusstext},#{buildtime},#{floor})
+    </insert>
+
+    <insert id="insertNonEmptyDiscuss" parameterType="com.cxy.springcloud.entities.Discuss">
+        insert into discuss
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userid != null">userid,</if>
+            <if test="textid != null">textid,</if>
+            <if test="discusstext != null">discusstext,</if>
+            <if test="buildtime != null">buildtime,</if>
+            <if test="floor != null">floor,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="userid != null"> #{userid},</if>
+            <if test="textid != null"> #{textid},</if>
+            <if test="discusstext != null"> #{discusstext},</if>
+            <if test="buildtime != null"> #{buildtime},</if>
+            <if test="floor != null"> #{floor},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteDiscussById" parameterType="java.lang.Integer">
+        delete from discuss
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteDiscuss" parameterType="com.cxy.springcloud.common.Assist">
+        delete from discuss
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <update id="updateDiscussById" parameterType="com.cxy.springcloud.entities.Discuss">
+        update discuss set
+            userid=#{userid}
+            ,textid=#{textid}
+            ,discusstext=#{discusstext}
+            ,buildtime=#{buildtime}
+            ,floor=#{floor}
+        where id=#{id}
+    </update>
+
+    <update id="updateNonEmptyDiscussById" parameterType="com.cxy.springcloud.entities.Discuss">
+        update discuss
+        <set>
+            <if test="userid != null">
+                userid=#{userid},
+            </if>
+            <if test="textid != null">
+                textid=#{textid},
+            </if>
+            <if test="discusstext != null">
+                discusstext=#{discusstext},
+            </if>
+            <if test="buildtime != null">
+                buildtime=#{buildtime},
+            </if>
+            <if test="floor != null">
+                floor=#{floor},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateDiscuss" parameterType="map">
+        update discuss
+        <set>
+                id=#{enti.id},
+                userid=#{enti.userid},
+                textid=#{enti.textid},
+                discusstext=#{enti.discusstext},
+                buildtime=#{enti.buildtime},
+                floor=#{enti.floor},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <update id="updateNonEmptyDiscuss" parameterType="map">
+        update discuss
+        <set>
+            <if test="enti.id != null">
+                id=#{enti.id},
+            </if>
+            <if test="enti.userid != null">
+                userid=#{enti.userid},
+            </if>
+            <if test="enti.textid != null">
+                textid=#{enti.textid},
+            </if>
+            <if test="enti.discusstext != null">
+                discusstext=#{enti.discusstext},
+            </if>
+            <if test="enti.buildtime != null">
+                buildtime=#{enti.buildtime},
+            </if>
+            <if test="enti.floor != null">
+                floor=#{enti.floor},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>

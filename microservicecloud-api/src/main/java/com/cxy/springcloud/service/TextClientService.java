@@ -1,7 +1,6 @@
 package com.cxy.springcloud.service;
 
 import com.cxy.springcloud.entities.Text;
-import com.cxy.springcloud.entities.User;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,4 +21,11 @@ public interface TextClientService {
 
     @RequestMapping(value = "/text/paging", method = RequestMethod.GET)
     public List<Text> findLimit(@RequestParam("fnum") int fnum, @RequestParam("bnum") int bnum);
+
+    @RequestMapping(value = "/text/status/{id}", method = RequestMethod.GET)
+    public String  status(@PathVariable("id") int id);
+
+    @RequestMapping(value = "/text/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody Text text);
 }
+

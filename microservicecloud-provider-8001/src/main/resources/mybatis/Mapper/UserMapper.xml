@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.springcloud.dao.UserDao">
+    <resultMap id="result_User_Map" type="com.cxy.springcloud.entities.User">
+        <id column="User0" property="id" />
+        <result column="User1" property="headid" />
+        <result column="User2" property="email" />
+        <result column="User3" property="password" />
+        <result column="User4" property="username" />
+        <result column="User5" property="phonenumber" />
+        <result column="User6" property="signintime" />
+        <result column="User7" property="focususers" />
+        <result column="User8" property="focustext" />
+        <result column="User9" property="sex" />
+        <result column="User10" property="underwrite" />
+        <result column="User11" property="experence" />
+    </resultMap>
+
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="user_Column">
+        user.id as User0
+        ,user.headid as User1
+        ,user.email as User2
+        ,user.password as User3
+        ,user.username as User4
+        ,user.phonenumber as User5
+        ,user.signintime as User6
+        ,user.focususers as User7
+        ,user.focustext as User8
+        ,user.sex as User9
+        ,user.underwrite as User10
+        ,user.experence as User11
+    </sql>
+
+    <select id="getUserRowCount" parameterType="com.cxy.springcloud.common.Assist" resultType="Integer">
+        select count(id) from user
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <select id="selectUser" parameterType="com.cxy.springcloud.common.Assist" resultMap="result_User_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="user_Column" /> 
+            </otherwise>
+        </choose>
+        from user
+        <if test="require!=null"><include refid="Assist" /></if>
+        <if test="order !=null">${order}</if>
+        <if test="rowSize !=null"> LIMIT #{rowSize} <if test="startRow !=null"> OFFSET #{startRow}</if></if>
+    </select> 
+
+    <select id="selectUserById" parameterType="java.lang.Integer" resultMap="result_User_Map">
+        select 
+            <include refid="user_Column" /> 
+        from user
+        where user.id = #{id}
+    </select> 
+
+
+    <insert id="insertUser" parameterType="com.cxy.springcloud.entities.User">
+        insert into user(id,headid,email,password,username,phonenumber,signintime,focususers,focustext,sex,underwrite,experence) 
+        values(#{id},#{headid},#{email},#{password},#{username},#{phonenumber},#{signintime},#{focususers},#{focustext},#{sex},#{underwrite},#{experence})
+    </insert>
+
+    <insert id="insertNonEmptyUser" parameterType="com.cxy.springcloud.entities.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="headid != null">headid,</if>
+            <if test="email != null">email,</if>
+            <if test="password != null">password,</if>
+            <if test="username != null">username,</if>
+            <if test="phonenumber != null">phonenumber,</if>
+            <if test="signintime != null">signintime,</if>
+            <if test="focususers != null">focususers,</if>
+            <if test="focustext != null">focustext,</if>
+            <if test="sex != null">sex,</if>
+            <if test="underwrite != null">underwrite,</if>
+            <if test="experence != null">experence,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="headid != null"> #{headid},</if>
+            <if test="email != null"> #{email},</if>
+            <if test="password != null"> #{password},</if>
+            <if test="username != null"> #{username},</if>
+            <if test="phonenumber != null"> #{phonenumber},</if>
+            <if test="signintime != null"> #{signintime},</if>
+            <if test="focususers != null"> #{focususers},</if>
+            <if test="focustext != null"> #{focustext},</if>
+            <if test="sex != null"> #{sex},</if>
+            <if test="underwrite != null"> #{underwrite},</if>
+            <if test="experence != null"> #{experence},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteUserById" parameterType="java.lang.Integer">
+        delete from user
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteUser" parameterType="com.cxy.springcloud.common.Assist">
+        delete from user
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <update id="updateUserById" parameterType="com.cxy.springcloud.entities.User">
+        update user set
+            headid=#{headid}
+            ,email=#{email}
+            ,password=#{password}
+            ,username=#{username}
+            ,phonenumber=#{phonenumber}
+            ,signintime=#{signintime}
+            ,focususers=#{focususers}
+            ,focustext=#{focustext}
+            ,sex=#{sex}
+            ,underwrite=#{underwrite}
+            ,experence=#{experence}
+        where id=#{id}
+    </update>
+
+    <update id="updateNonEmptyUserById" parameterType="com.cxy.springcloud.entities.User">
+        update user
+        <set>
+            <if test="headid != null">
+                headid=#{headid},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+            <if test="password != null">
+                password=#{password},
+            </if>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="phonenumber != null">
+                phonenumber=#{phonenumber},
+            </if>
+            <if test="signintime != null">
+                signintime=#{signintime},
+            </if>
+            <if test="focususers != null">
+                focususers=#{focususers},
+            </if>
+            <if test="focustext != null">
+                focustext=#{focustext},
+            </if>
+            <if test="sex != null">
+                sex=#{sex},
+            </if>
+            <if test="underwrite != null">
+                underwrite=#{underwrite},
+            </if>
+            <if test="experence != null">
+                experence=#{experence},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateUser" parameterType="map">
+        update user
+        <set>
+                id=#{enti.id},
+                headid=#{enti.headid},
+                email=#{enti.email},
+                password=#{enti.password},
+                username=#{enti.username},
+                phonenumber=#{enti.phonenumber},
+                signintime=#{enti.signintime},
+                focususers=#{enti.focususers},
+                focustext=#{enti.focustext},
+                sex=#{enti.sex},
+                underwrite=#{enti.underwrite},
+                experence=#{enti.experence},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <update id="updateNonEmptyUser" parameterType="map">
+        update user
+        <set>
+            <if test="enti.id != null">
+                id=#{enti.id},
+            </if>
+            <if test="enti.headid != null">
+                headid=#{enti.headid},
+            </if>
+            <if test="enti.email != null">
+                email=#{enti.email},
+            </if>
+            <if test="enti.password != null">
+                password=#{enti.password},
+            </if>
+            <if test="enti.username != null">
+                username=#{enti.username},
+            </if>
+            <if test="enti.phonenumber != null">
+                phonenumber=#{enti.phonenumber},
+            </if>
+            <if test="enti.signintime != null">
+                signintime=#{enti.signintime},
+            </if>
+            <if test="enti.focususers != null">
+                focususers=#{enti.focususers},
+            </if>
+            <if test="enti.focustext != null">
+                focustext=#{enti.focustext},
+            </if>
+            <if test="enti.sex != null">
+                sex=#{enti.sex},
+            </if>
+            <if test="enti.underwrite != null">
+                underwrite=#{enti.underwrite},
+            </if>
+            <if test="enti.experence != null">
+                experence=#{enti.experence},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>

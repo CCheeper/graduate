@@ -10,12 +10,12 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class ReFloor {
-    private int refId;
+    private int refid;
     private int user_id;
-    private int reUser_id;
-    private String reFloorContent;
-    private int reFloor;
-    private int reFloorId;
-    private Date buildTime;
+    private int reuser_id;
+    private String refloorcontent;
+    private int refloor;
+    private int refloorId;
+    private Date buildtime;
 
 }

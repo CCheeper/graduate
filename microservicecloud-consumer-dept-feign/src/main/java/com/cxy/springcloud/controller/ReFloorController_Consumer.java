@@ -40,4 +40,9 @@ public class ReFloorController_Consumer {
     public List<ReFloor> paging(@RequestParam("fnum") int fnum,@RequestParam("bnum") int bnum) {
         return service.findLimit(fnum,bnum);
     }
+
+    @RequestMapping(value = "/consumer/refloor/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody ReFloor ReFloor) {
+        return service.update(ReFloor);
+    }
 }

@@ -12,11 +12,10 @@ import java.util.Date;
 @Data
 public class Text {
     private int id;
-    private int likeNum;
-    private Date releaseTime;
+    private int likenum;
+    private Date releasetime;
     private String status;
-    private String text;
-    private int userId;
+    private int userid;
     private String type;
     private int scanned;
 }

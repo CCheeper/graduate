@@ -23,6 +23,9 @@ public interface UserClientService {
     @RequestMapping(value = "/user/get/{id}", method = RequestMethod.GET)
     public User get(@PathVariable("id") int id);
 
+    @RequestMapping(value = "/user/getbyusername", method = RequestMethod.GET)
+    public User getbyusername(@RequestParam("username") String  username);
+
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public List<User> list();
 
@@ -34,4 +37,8 @@ public interface UserClientService {
 
     @RequestMapping(value = "/user/paging", method = RequestMethod.GET)
     public List<User> findLimit(@RequestParam("fnum") int fnum, @RequestParam("bnum") int bnum);
-}
+
+    @RequestMapping(value = "/user/update" ,method = RequestMethod.PUT)
+    public Boolean update(@RequestBody User user);
+    }
+

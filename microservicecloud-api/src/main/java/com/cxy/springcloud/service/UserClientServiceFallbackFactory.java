@@ -19,6 +19,11 @@ public class UserClientServiceFallbackFactory implements FallbackFactory<UserCli
             }
 
             @Override
+            public User getbyusername(String username) {
+                return null;
+            }
+
+            @Override
             public List<User> list() {
                 return null;
             }
@@ -37,6 +42,11 @@ public class UserClientServiceFallbackFactory implements FallbackFactory<UserCli
 
             @Override
             public List<User> findLimit(int fnum, int bnum) {
+                return null;
+            }
+
+            @Override
+            public Boolean update(User user) {
                 return null;
             }
         };

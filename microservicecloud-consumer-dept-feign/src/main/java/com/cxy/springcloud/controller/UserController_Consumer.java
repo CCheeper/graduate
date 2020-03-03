@@ -13,6 +13,11 @@ public class UserController_Consumer {
     @Autowired
     private UserClientService service;
 
+    @RequestMapping(value = "/consumer/user/getbyusername")
+    public User getbyusername(@RequestParam("username") String  username) {
+        return this.service.getbyusername(username);
+    }
+
     @RequestMapping(value = "/consumer/user/get/{id}")
     public User get(@PathVariable("id") int id) {
         return this.service.get(id);
@@ -38,5 +43,10 @@ public class UserController_Consumer {
     @RequestMapping(value = "/consumer/user/paging", method = RequestMethod.GET)
     public List<User> paging(@RequestParam("fnum") int fnum,@RequestParam("bnum") int bnum) {
         return service.findLimit(fnum,bnum);
+    }
+
+    @RequestMapping(value = "/consumer/user/update" ,method = RequestMethod.PUT)
+    public Boolean update(@RequestBody User user) {
+        return service.update(user);
     }
 }

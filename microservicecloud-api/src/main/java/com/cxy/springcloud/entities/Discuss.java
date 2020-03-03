@@ -10,10 +10,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class Discuss {
-    private int userId;
-    private int textId;
-    private String discussText;
-    private Date buildTime;
+    private int userid;
+    private int textid;
+    private String discusstext;
+    private Date buildtime;
     private int id;
     private int floor;
 }

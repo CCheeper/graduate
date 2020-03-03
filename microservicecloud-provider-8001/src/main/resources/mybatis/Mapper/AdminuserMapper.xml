@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.springcloud.dao.AdminuserDao">
+    <resultMap id="result_Adminuser_Map" type="com.cxy.springcloud.entities.AdminUser">
+        <id column="Adminuser0" property="id" />
+        <result column="Adminuser1" property="username" />
+        <result column="Adminuser2" property="password" />
+    </resultMap>
+
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="adminuser_Column">
+        adminuser.id as Adminuser0
+        ,adminuser.username as Adminuser1
+        ,adminuser.password as Adminuser2
+    </sql>
+
+    <select id="getAdminuserRowCount" parameterType="com.cxy.springcloud.common.Assist" resultType="java.lang.Integer">
+        select count(id) from adminuser
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <select id="selectAdminuser" parameterType="com.cxy.springcloud.common.Assist" resultMap="result_Adminuser_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="adminuser_Column" /> 
+            </otherwise>
+        </choose>
+        from adminuser
+        <if test="require!=null"><include refid="Assist" /></if>
+        <if test="order !=null">${order}</if>
+        <if test="rowSize !=null"> LIMIT #{rowSize} <if test="startRow !=null"> OFFSET #{startRow}</if></if>
+    </select> 
+
+    <select id="selectAdminuserById" parameterType="java.lang.Integer" resultMap="result_Adminuser_Map">
+        select 
+            <include refid="adminuser_Column" /> 
+        from adminuser
+        where adminuser.id = #{id}
+    </select> 
+
+
+    <insert id="insertAdminuser" parameterType="com.cxy.springcloud.entities.AdminUser">
+        insert into adminuser(id,username,password) 
+        values(#{id},#{username},#{password})
+    </insert>
+
+    <insert id="insertNonEmptyAdminuser" parameterType="com.cxy.springcloud.entities.AdminUser">
+        insert into adminuser
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="username != null"> #{username},</if>
+            <if test="password != null"> #{password},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteAdminuserById" parameterType="java.lang.Integer">
+        delete from adminuser
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteAdminuser" parameterType="com.cxy.springcloud.common.Assist">
+        delete from adminuser
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <update id="updateAdminuserById" parameterType="com.cxy.springcloud.entities.AdminUser">
+        update adminuser set
+            username=#{username}
+            ,password=#{password}
+        where id=#{id}
+    </update>
+
+    <update id="updateNonEmptyAdminuserById" parameterType="com.cxy.springcloud.entities.AdminUser">
+        update adminuser
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="password != null">
+                password=#{password},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateAdminuser" parameterType="map">
+        update adminuser
+        <set>
+                id=#{enti.id},
+                username=#{enti.username},
+                password=#{enti.password},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <update id="updateNonEmptyAdminuser" parameterType="map">
+        update adminuser
+        <set>
+            <if test="enti.id != null">
+                id=#{enti.id},
+            </if>
+            <if test="enti.username != null">
+                username=#{enti.username},
+            </if>
+            <if test="enti.password != null">
+                password=#{enti.password},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>

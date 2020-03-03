@@ -22,4 +22,7 @@ public interface AdminUserClientService {
 
     @RequestMapping(value = "/adminuser/paging", method = RequestMethod.GET)
     public List<AdminUser> findLimit(@RequestParam("fnum") int fnum, @RequestParam("bnum") int bnum);
+
+    @RequestMapping(value = "/adminuser/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody AdminUser adminUser);
 }

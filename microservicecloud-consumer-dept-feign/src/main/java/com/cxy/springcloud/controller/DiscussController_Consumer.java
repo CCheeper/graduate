@@ -40,4 +40,9 @@ public class DiscussController_Consumer {
     public List<Discuss> paging(@RequestParam("fnum") int fnum,@RequestParam("bnum") int bnum) {
         return service.findLimit(fnum,bnum);
     }
+
+    @RequestMapping(value = "/consumer/discuss/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody Discuss discuss) {
+        return service.update(discuss);
+    }
 }

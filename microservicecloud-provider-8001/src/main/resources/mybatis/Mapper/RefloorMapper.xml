@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxy.springcloud.dao.RefloorDao">
+    <resultMap id="result_Refloor_Map" type="com.cxy.springcloud.entities.ReFloor">
+        <id column="Refloor0" property="refloorId" />
+        <result column="Refloor1" property="refid" />
+        <result column="Refloor2" property="user_id" />
+        <result column="Refloor3" property="reuser_id" />
+        <result column="Refloor4" property="refloorcontent" />
+        <result column="Refloor5" property="refloor" />
+        <result column="Refloor6" property="buildtime" />
+    </resultMap>
+
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value}
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="refloor_Column">
+        refloor.refloor_id as Refloor0
+        ,refloor.refid as Refloor1
+        ,refloor.user_id as Refloor2
+        ,refloor.reuser_id as Refloor3
+        ,refloor.refloorcontent as Refloor4
+        ,refloor.refloor as Refloor5
+        ,refloor.buildtime as Refloor6
+    </sql>
+
+    <select id="getRefloorRowCount" parameterType="com.cxy.springcloud.common.Assist" resultType="java.lang.Integer">
+        select count(refloor_id) from refloor
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <select id="selectRefloor" parameterType="com.cxy.springcloud.common.Assist" resultMap="result_Refloor_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="refloor_Column" /> 
+            </otherwise>
+        </choose>
+        from refloor
+        <if test="require!=null"><include refid="Assist" /></if>
+        <if test="order !=null">${order}</if>
+        <if test="rowSize !=null"> LIMIT #{rowSize} <if test="startRow !=null"> OFFSET #{startRow}</if></if>
+    </select> 
+
+    <select id="selectRefloorById" parameterType="java.lang.Integer" resultMap="result_Refloor_Map">
+        select 
+            <include refid="refloor_Column" /> 
+        from refloor
+        where refloor.refloor_id = #{id}
+    </select> 
+
+
+    <insert id="insertRefloor" parameterType="com.cxy.springcloud.entities.ReFloor">
+        insert into refloor(refloor_id,refid,user_id,reuser_id,refloorcontent,refloor,buildtime) 
+        values(#{refloorId},#{refid},#{userId},#{reuserId},#{refloorcontent},#{refloor},#{buildtime})
+    </insert>
+
+    <insert id="insertNonEmptyRefloor" parameterType="com.cxy.springcloud.entities.ReFloor">
+        insert into refloor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="refloorId != null">refloor_id,</if>
+            <if test="refid != null">refid,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="reuserId != null">reuser_id,</if>
+            <if test="refloorcontent != null">refloorcontent,</if>
+            <if test="refloor != null">refloor,</if>
+            <if test="buildtime != null">buildtime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="refloorId != null"> #{refloorId},</if>
+            <if test="refid != null"> #{refid},</if>
+            <if test="userId != null"> #{userId},</if>
+            <if test="reuserId != null"> #{reuserId},</if>
+            <if test="refloorcontent != null"> #{refloorcontent},</if>
+            <if test="refloor != null"> #{refloor},</if>
+            <if test="buildtime != null"> #{buildtime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteRefloorById" parameterType="java.lang.Integer">
+        delete from refloor
+        where refloor_id = #{id}
+    </delete>
+
+    <delete id="deleteRefloor" parameterType="com.cxy.springcloud.common.Assist">
+        delete from refloor
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <update id="updateRefloorById" parameterType="com.cxy.springcloud.entities.ReFloor">
+        update refloor set
+            refid=#{refid}
+            ,user_id=#{userId}
+            ,reuser_id=#{reuserId}
+            ,refloorcontent=#{refloorcontent}
+            ,refloor=#{refloor}
+            ,buildtime=#{buildtime}
+        where refloor_id=#{refloorId}
+    </update>
+
+    <update id="updateNonEmptyRefloorById" parameterType="com.cxy.springcloud.entities.ReFloor">
+        update refloor
+        <set>
+            <if test="refid != null">
+                refid=#{refid},
+            </if>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="reuserId != null">
+                reuser_id=#{reuserId},
+            </if>
+            <if test="refloorcontent != null">
+                refloorcontent=#{refloorcontent},
+            </if>
+            <if test="refloor != null">
+                refloor=#{refloor},
+            </if>
+            <if test="buildtime != null">
+                buildtime=#{buildtime},
+            </if>
+        </set>
+        where refloor_id=#{refloorId}
+    </update>
+
+    <update id="updateRefloor" parameterType="map">
+        update refloor
+        <set>
+                refloor_id=#{enti.refloorId},
+                refid=#{enti.refid},
+                user_id=#{enti.userId},
+                reuser_id=#{enti.reuserId},
+                refloorcontent=#{enti.refloorcontent},
+                refloor=#{enti.refloor},
+                buildtime=#{enti.buildtime},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <update id="updateNonEmptyRefloor" parameterType="map">
+        update refloor
+        <set>
+            <if test="enti.refloorId != null">
+                refloor_id=#{enti.refloorId},
+            </if>
+            <if test="enti.refid != null">
+                refid=#{enti.refid},
+            </if>
+            <if test="enti.userId != null">
+                user_id=#{enti.userId},
+            </if>
+            <if test="enti.reuserId != null">
+                reuser_id=#{enti.reuserId},
+            </if>
+            <if test="enti.refloorcontent != null">
+                refloorcontent=#{enti.refloorcontent},
+            </if>
+            <if test="enti.refloor != null">
+                refloor=#{enti.refloor},
+            </if>
+            <if test="enti.buildtime != null">
+                buildtime=#{enti.buildtime},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>

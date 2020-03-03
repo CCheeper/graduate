@@ -22,4 +22,7 @@ public interface DiscussClientService {
 
     @RequestMapping(value = "/discuss/paging", method = RequestMethod.GET)
     public List<Discuss> findLimit(@RequestParam("fnum") int fnum, @RequestParam("bnum") int bnum);
+
+    @RequestMapping(value = "/discuss/update" ,method = RequestMethod.POST)
+    public Boolean update(@RequestBody Discuss discuss);
 }
